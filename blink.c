@@ -24,6 +24,7 @@
 #define GPIO_OUT (GPIO_BASE + 0x10) // output data register
 
 #define PIN_NUMBER 25
+#define DELAY 1000000
 
 /* Register macros for GPIO_CTRL - required to drive output */
 /* Example: 0xD0000000 + (0x08 * 25) + 0x04 */
@@ -61,7 +62,7 @@ void digital_write_low(uint32_t pin_number) {
 }
 
 void delay(void) {
-    for (volatile int i = 0; i < 1000000; i++) { }
+    for (volatile int i = 0; i < DELAY; i++) { }
 }
 
 int main(void) {

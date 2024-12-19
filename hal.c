@@ -15,6 +15,7 @@
 *
 **************************************/
 #include <stdint.h>
+#include <stdbool.h>
 
 /* Base address for GPIO control registers */
 #define GPIO_BASE 0xD0000000
@@ -80,7 +81,7 @@ void digital_write(uint32_t pin_number, uint32_t value) {
     }
 }
 
-uint8_t digital_read(uint32_t pin_number) {
+bool digital_read(uint32_t pin_number) {
     return (*gpio_in >> pin_number) & 1;
 }
 

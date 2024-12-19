@@ -21,13 +21,22 @@
 int main(void) {
     set_pin_mode_output(ONBOARD_LED_PIN_NUMBER);
     while (1) {
+        /* Method 1 of toggling*/
         digital_write(ONBOARD_LED_PIN_NUMBER, 1);
         delay(1000000);
         digital_write(ONBOARD_LED_PIN_NUMBER, 0);
-        delay(2000000);
+        delay(1000000);
+
+        /* Method 2 of toggling */
         digital_toggle(ONBOARD_LED_PIN_NUMBER);
-        delay(3000000);
+        delay(400000000);
         digital_toggle(ONBOARD_LED_PIN_NUMBER);
-        delay(4000000);
+        delay(400000000);
+
+        /* Method 3 of toggling */
+        digital_write(ONBOARD_LED_PIN_NUMBER, !digital_read(ONBOARD_LED_PIN_NUMBER));
+        delay(500000000);
+        digital_write(ONBOARD_LED_PIN_NUMBER, !digital_read(ONBOARD_LED_PIN_NUMBER));
+        delay(500000000);
     }
 }

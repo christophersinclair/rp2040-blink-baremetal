@@ -7,6 +7,7 @@
 *
 **************************************/
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifndef __HAL_H__
 #define __HAL_H__
@@ -47,6 +48,7 @@ void digital_toggle(uint32_t pin_number);
 * Function: digital_write
 * @brief Write the digital state to the given pin
 * @param pin_number The GPIO pin number
+* @param state The state to write to the pin (0 or 1)
 * @return void
 */
 void digital_write(uint32_t pin_number, uint32_t state);
@@ -55,14 +57,14 @@ void digital_write(uint32_t pin_number, uint32_t state);
 * Function: digital_read
 * @brief Read the digital state of the given pin
 * @param pin_number The GPIO pin number
-* @return void
+* @return The state of the pin (0 or 1)
 */
-uint8_t digital_read(uint32_t pin_number);
+bool digital_read(uint32_t pin_number);
 
 /**
 * Function: delay
 * @brief Delay by running a non-compiler-optimized-away loop
-* @param void
+* @param count The number of iterations to delay
 * @return void
 */
 void delay(uint32_t count);

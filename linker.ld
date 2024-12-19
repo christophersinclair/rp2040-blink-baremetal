@@ -1,38 +1,38 @@
-/* Define memory regions */
 MEMORY
 {
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 2M
+    FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 2M
     RAM (rwx) : ORIGIN = 0x20000000, LENGTH = 256K
 }
 
-/* Define sections and their placement in memory */
 SECTIONS
 {
-    /* Interrupt vector table goes at the start of FLASH */
     .isr_vector : {
-        *(.isr_vector)   /* The interrupt vector table */
+        *(.isr_vector)
     } > FLASH
 
-    /* Code and read-only data go into FLASH */
-    .text : {
-        *(.text)         /* Code */
-        *(.rodata*)      /* Read-only data (e.g., const variables) */
-        KEEP(*(.init))   /* Initialization code */
-        KEEP(*(.fini))   /* Finalization code */
+    .text : ALIGN(0x4) {
+        *(.text)         
+        *(.rodata*)
     } > FLASH
 
-    /* Initialized data goes into RAM, but its initial values are stored in FLASH */
     .data : {
-        *(.data)         /* Initialized data */
-    } > RAM AT > FLASH
+        __data_load__ = .;
+        *(.data)
+        __data_end__ = .;
+    } > FLASH
 
-    /* Uninitialized data (zeroed at runtime) goes into RAM */
     .bss : {
-        *(.bss)          /* Uninitialized variables */
-        *(COMMON)        /* Common symbols */
+        __bss_start__ = .; 
+        *(.bss)            
+        *(COMMON)          
+        __bss_end__ = .;   
     } > RAM
 
-    /* Stack section */
+    .data : {
+        __data_start__ = .;
+        *(.data)
+    } > RAM
+
     .stack : {
         . = ALIGN(8);              /* Align to 8-byte boundary */
         __stack_top = .;           /* Define the top of the stack */
@@ -43,6 +43,6 @@ SECTIONS
     /* Heap section (for dynamic memory allocation) */
     . = ALIGN(4);                  /* Align to 4-byte boundary */
     __heap_start = .;              /* Define the start of the heap */
-    . = ORIGIN(RAM) + LENGTH(RAM);   /* Move to the end of RAM */
+    . = ORIGIN(RAM) + LENGTH(RAM); /* Move to the end of RAM */
     __heap_end = .;                /* Define the end of the heap */
 }

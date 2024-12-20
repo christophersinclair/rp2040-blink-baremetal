@@ -10,7 +10,7 @@ SECTIONS
         *(.isr_vector)
     } > FLASH
 
-    .text : ALIGN(0x4) {
+    .text : {
         *(.text)         
         *(.rodata*)
     } > FLASH
@@ -33,16 +33,15 @@ SECTIONS
         *(.data)
     } > RAM
 
-    .stack : {
-        . = ALIGN(8);              /* Align to 8-byte boundary */
-        __stack_top = .;           /* Define the top of the stack */
-        . = . + 0x1000;            /* Reserve 4KB for the stack */
-        __stack_bottom = .;        /* Define the bottom of the stack */
+    /* Heap */
+    . = ALIGN(8);
+    __heap_start = .;
+
+    .stack (NOLOAD) : {
+        __INITIAL_SP = ORIGIN(RAM) + LENGTH(RAM); /* Top of the stack at the end of RAM */
+        . = __INITIAL_SP - 0x1000;                /* Reserve 4KB for stack */
+        __stack_bottom = .;                     
     } > RAM
 
-    /* Heap section (for dynamic memory allocation) */
-    . = ALIGN(4);                  /* Align to 4-byte boundary */
-    __heap_start = .;              /* Define the start of the heap */
-    . = ORIGIN(RAM) + LENGTH(RAM); /* Move to the end of RAM */
-    __heap_end = .;                /* Define the end of the heap */
+    __heap_end = __stack_bottom;                /* End heap at bottom of stack */
 }

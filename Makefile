@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Makefile that can compile multiple source files and support two platform targets
+# Makefile for compiling against RP2040 ARM Cortex-M0+
 #
 # Use: make [TARGET] [OVERRIDES]
 #
@@ -7,8 +7,6 @@
 #      <FILE>.o - Builds <FILE>.o object file without linking
 #      build - Builds and links all source files
 #      clean - Removes all generated files
-#
-#
 #------------------------------------------------------------------------------
 SOURCES = hal.c \
 		  blink.c \
@@ -19,8 +17,10 @@ TARGET = $(BASENAME).elf
 
 GEN_FLAGS = -Wall \
             -Werror \
+			-Wno-error=main \
             -g \
-            -O0 \
+            -O2 \
+			-g0 \
             -std=c99
 
 CC = arm-none-eabi-gcc
@@ -29,16 +29,15 @@ LINKER_FILE = linker.ld
 
 CPU = cortex-m0plus
 ARCH = thumb
-EXTRA_LDFLAGS = -nostartfiles \
-				-T $(LINKER_FILE) \
-                --specs=nosys.specs
 
 CFLAGS = -mcpu=$(CPU) \
          -mthumb \
          $(GEN_FLAGS) \
          $(EXTRA_CFLAGS)
 
-LDFLAGS = -Wl,-Map=$(BASENAME).map $(EXTRA_LDFLAGS)
+LDFLAGS = -nostartfiles \
+		  -T linker.ld \
+		  --specs=nosys.specs
 
 OBJS = $(SOURCES:.c=.o)
 

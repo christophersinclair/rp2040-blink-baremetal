@@ -18,7 +18,7 @@
 
 #define ONBOARD_LED_PIN_NUMBER 25
 
-int main(void) {
+void main(void) {
     set_pin_mode_output(ONBOARD_LED_PIN_NUMBER);
     while (1) {
         /* Method 1 of toggling*/

@@ -18,10 +18,9 @@ TARGET = $(BASENAME).elf
 GEN_FLAGS = -Wall \
             -Werror \
 			-Wno-error=main \
-            -g \
-            -O2 \
-			-g0 \
-            -std=c99
+			-g \
+            -O0 \
+			-std=c99
 
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-ld
@@ -37,7 +36,7 @@ CFLAGS = -mcpu=$(CPU) \
 
 LDFLAGS = -nostartfiles \
 		  -T linker.ld \
-		  --specs=nosys.specs
+		  --specs=nosys.specs \
 
 OBJS = $(SOURCES:.c=.o)
 

@@ -14,7 +14,7 @@
 #include <stdint.h>
 
 /* Linker script symbols */
-extern uint32_t __INITIAL_SP;   // Top of the stack
+extern uint32_t __stack_top;   // Top of the stack
 extern uint32_t __data_start__; // Start of .data in RAM
 extern uint32_t __data_end__;   // End of .data in RAM
 extern uint32_t __bss_start__;  // Start of .bss in RAM
@@ -22,14 +22,25 @@ extern uint32_t __bss_end__;    // End of .bss in RAM
 extern uint32_t __data_load__;  // Start of .data in FLASH
 
 void Reset_Handler(void);
-void NMI_Handler(void);
-void HardFault_Handler(void);
+void Default_Handler(void);
 
-__attribute__((section(".isr_vector"))) const uint32_t VectorTable[] = {
-    (uint32_t)&__INITIAL_SP,     // Initial stack pointer
-    (uint32_t)Reset_Handler,     // Reset handler
-    (uint32_t)NMI_Handler,       // NMI handler
-    (uint32_t)HardFault_Handler, // HardFault handler
+__attribute__((section(".isr_vector"))) const void *vector_table[] = {
+    (void *)&__stack_top, // Initial stack pointer
+    Reset_Handler,         // Reset handler
+    Default_Handler,       // NMI handler
+    Default_Handler,       // HardFault handler
+    Default_Handler,       // Reserved
+    Default_Handler,       // Reserved
+    Default_Handler,       // Reserved
+    Default_Handler,       // Reserved
+    Default_Handler,       // Reserved
+    Default_Handler,       // Reserved
+    Default_Handler,       // Reserved
+    Default_Handler,       // SVC handler
+    Default_Handler,       // Reserved
+    Default_Handler,       // Reserved
+    Default_Handler,       // PendSV handler
+    Default_Handler,       // SysTick handler
 };
 
 void Reset_Handler(void) {
@@ -49,14 +60,6 @@ void Reset_Handler(void) {
     /* Call the main function */
     extern void main(void);
     main();
-}
-
-void NMI_Handler(void) {
-    while (1) {}
-}
-
-void HardFault_Handler(void) {
-    while (1) {}
 }
 
 void Default_Handler(void) {

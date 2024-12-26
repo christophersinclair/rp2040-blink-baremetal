@@ -86,5 +86,5 @@ bool digital_read(uint32_t pin_number) {
 }
 
 void delay(uint32_t count) {
-    for (volatile int i = 0; i < count; i++) { }
+    for (volatile uint32_t i = 0; i < count; i++) { }
 }
